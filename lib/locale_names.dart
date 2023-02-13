@@ -1290,20 +1290,20 @@ extension DisplayNames on Locale {
   String get defaultDisplayLanguage {
     final lookup = _getLookup();
     final languageCode = this.languageCode;
-    return lookup[languageCode];
+    return lookup[languageCode] ?? languageCode;
   }
 
   String get defaultDisplayLanguageScript {
     final lookup = _getLookup();
     final languageScript = this.languageScript;
-    return lookup[languageScript];
+    return lookup[languageScript] ?? languageScript;
   }
 
   String get defaultDisplayCountry {
     if (this.countryCode != null) {
       final lookup = _getLookup();
       final countryCode = this.countryCode;
-      return lookup[countryCode];
+      return lookup[countryCode] ?? countryCode!;
     }
     return "";
   }
@@ -1311,52 +1311,52 @@ extension DisplayNames on Locale {
   String get nativeDisplayLanguage {
     final lookup = _getLookup(locale: this);
     final languageCode = this.languageCode;
-    return lookup[languageCode];
+    return lookup[languageCode] ?? languageCode;
   }
 
   String get nativeDisplayLanguageScript {
     final lookup = _getLookup(locale: this);
     final languageScript = this.languageScript;
-    return lookup[languageScript];
+    return lookup[languageScript] ?? languageScript;
   }
 
   String get nativeDisplayCountry {
     if (this.countryCode != null) {
       final lookup = _getLookup(locale: this);
       final countryCode = this.countryCode;
-      return lookup[countryCode];
+      return lookup[countryCode] ?? countryCode!;
     }
     return "";
   }
 
   String displayLanguageIn(Locale locale) {
     final lookup = _getLookup(locale: locale);
-    return lookup[this.languageCode];
+    return lookup[this.languageCode] ?? this.languageCode;
   }
 
   String displayLanguageScriptIn(Locale locale) {
     final lookup = _getLookup(locale: locale);
     final languageScript = this.languageScript;
-    return lookup[languageScript];
+    return lookup[languageScript] ?? languageScript;
   }
 
   String displayCountryIn(Locale locale) {
     if (this.countryCode != null) {
       final lookup = _getLookup(locale: locale);
       final countryCode = this.countryCode;
-      return lookup[countryCode];
+      return lookup[countryCode] ?? countryCode!;
     }
     return "";
   }
 
   String get languageScript {
     return this.languageCode +
-        (this.scriptCode == null || this.scriptCode.isEmpty
+        (this.scriptCode == null || this.scriptCode!.isEmpty
             ? ""
             : "_${this.scriptCode}");
   }
 
-  Map<String, String> _getLookup({Locale locale}) {
+  Map<String, String> _getLookup({Locale? locale}) {
     if (locale == null) {
       return names_en.names;
     }
@@ -1372,9 +1372,7 @@ extension DisplayNames on Locale {
       parent = this._load(parentName);
     }
     Map<String, dynamic> data = tables[name];
-    if (data != null) {
-      parent.addAll(data);
-    }
+    parent.addAll(data as Map<String, String>);
     return parent;
   }
 }
